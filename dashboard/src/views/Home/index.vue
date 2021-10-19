@@ -11,10 +11,12 @@ import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import CustomHeader from './CustomHeader.vue';
 import Contact from './Contact.vue';
+import useModal from '../../hooks/useModal';
 export default {
   components: { CustomHeader, Contact },
   // O método Setup é o "core" da aplicação construída com a Composition API. Nela, declaramos métodos e definimos valores que podem ficar expostos para o nosso template.
   setup() {
+    const modal = useModal();
     const router = useRouter();
     // onMounted: 'quando o component for montado, vamo tomar uma determinada ação'
     onMounted(() => {
@@ -26,9 +28,17 @@ export default {
       }
     });
 
-    function handleLogin() {}
+    function handleLogin() {
+      modal.open({
+        component: 'ModalLogin'
+      });
+    }
 
-    function handleAccountCreate() {}
+    function handleAccountCreate() {
+      modal.open({
+        component: 'ModalAccountCreate'
+      });
+    }
 
     return {
       handleLogin,
