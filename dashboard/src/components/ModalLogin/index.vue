@@ -29,6 +29,7 @@
           "
           placeholder="example: john@gmail.com"
         />
+        <!-- A dupla negação transforma o 'state.email.errorMessage' em booleano -->
         <span
           v-if="!!state.email.errorMessage"
           class="block font-medium text-brand-danger"
@@ -63,6 +64,7 @@
           {{ state.password.errorMessage }}
         </span>
       </label>
+      <!-- A classe dinâmica ":class" está sendo usada abaixo para colocar opacity-50 quando isLoading for true  -->
       <button
         :disable="state.isLoading"
         type="submit"
@@ -83,35 +85,39 @@
           all
           duration-150
         "
-      ></button>
+      >
+        Entrar
+      </button>
     </form>
   </div>
 </template>
 
 <script>
 import { reactive } from 'vue';
-import {useRouter}  from 'vue-router
+import { useRouter } from 'vue-router';
 // Biblioteca para trabalhar com formulários
-import {useField} from 'vee-validate'
-import {useToast} from 'vue-toastification'
+import { useField } from 'vee-validate';
+import { useToast } from 'vue-toastification';
 import useModal from '../../hooks/useModal';
-import {validateEmptyAndLength3, validadeEmptyAndEmail} from '../../utils/validators';
-import services from '../../services'
+import {
+  validateEmptyAndLength3,
+  validadeEmptyAndEmail
+} from '../../utils/validators';
+import services from '../../services';
 export default {
   setup() {
     const router = useRouter();
     const modal = useModal();
     const toast = useToast();
-    const {
-      value: emailValue, 
-      errorMessage: emailErrorMessage
-    } = useField('email', validadeEmptyAndEmail)
+    const { value: emailValue, errorMessage: emailErrorMessage } = useField(
+      'email',
+      validadeEmptyAndEmail
+    );
 
-     const {
-      value: passwordValue, 
-      errorMessage: passwordErrorMessage
-    } = useField('password', validateEmptyAndLength3 )
+    const { value: passwordValue, errorMessage: passwordErrorMessage } =
+      useField('password', validateEmptyAndLength3);
 
+    // Dentro do state definimos todas as propriedades que iremos receber no nosso component (ModalLogin, nesse caso). Essa estratégia é
     const state = reactive({
       // o modal de login é um modal de requisição, por isso precisamos de uma propridade que verificar se há erros
       hasError: false,
@@ -126,42 +132,42 @@ export default {
       }
     });
 
-   async function handleSubmit() {
-      try{
-        toast.clear()
+    async function handleSubmit() {
+      try {
+        toast.clear();
         state.isLoading = true;
-        const {data, errors } = await services.auth.login({
+        const { data, errors } = await services.auth.login({
           email: state.email.value,
           password: state.password.value
-        })
+        });
 
-        if(!errors) {
-          window.localStorage.setItem('token', data.token)
-          // Para direcionar o usuário para a tela de Feedbacks caso ele esteja autenticado: 
-          router.push({name: 'Feedbacks'})
+        if (!errors) {
+          window.localStorage.setItem('token', data.token);
+          // Para direcionar o usuário para a tela de Feedbacks caso ele esteja autenticado:
+          router.push({ name: 'Feedbacks' });
 
-          state.isLoading = false
+          state.isLoading = false;
 
           // Após direcionarmos o usuário, fechamos o modal
-          modal.close()
-          return
+          modal.close();
+          return;
         }
 
-        if(errors.status === 404){
-            toast.error('E-mail não encontrado')
+        if (errors.status === 404) {
+          toast.error('E-mail não encontrado');
         }
-         if(errors.status === 401){
-           toast.error('E-mail/senha inválidos')
+        if (errors.status === 401) {
+          toast.error('E-mail/senha inválidos');
         }
-         if(errors.status === 400){
-           toast.error('Ocorreu um erro ao fazer o login')
+        if (errors.status === 400) {
+          toast.error('Ocorreu um erro ao fazer o login');
         }
 
-        state.isLoading = false
-      }catch(error){
+        state.isLoading = false;
+      } catch (error) {
         state.isLoading = false;
         state.hasError = !!error;
-        toast.error('Ocorreu um erro ao fazer o login')
+        toast.error('Ocorreu um erro ao fazer o login');
       }
     }
 
