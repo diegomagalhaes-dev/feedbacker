@@ -29,7 +29,7 @@
           "
         >
           <div class="flex flex-col px-12 py-10 bg-white">
-            <!-- Com a estratégia abaixo,fazemos com que 'component' assuma a forma que disponível no nosso state -->
+            <!-- Com a estratégia abaixo,fazemos com que 'component' assuma a forma que disponível no nosso state, ele fica olhando reativamente pro nosso State de assume a forma do Component em questão-->
             <component :is="state.component" />
           </div>
         </div>
@@ -61,6 +61,7 @@ export default {
   },
   setup() {
     const modal = useModal();
+    // Dentro de Reactive, estou passando todos os elementos necessários para que o factory crie o nosso modal, reativamente.
     const state = reactive({
       isActive: false,
       component: {},
