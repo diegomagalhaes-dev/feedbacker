@@ -86,7 +86,8 @@
           duration-150
         "
       >
-        Entrar
+        <icon v-if="state.isLoading" name="loading" class="animate-spin" />
+        <span v-else>Entrar</span>
       </button>
     </form>
   </div>
@@ -99,19 +100,22 @@ import { useRouter } from 'vue-router';
 import { useField } from 'vee-validate';
 import { useToast } from 'vue-toastification';
 import useModal from '../../hooks/useModal';
+import Icon from '../../components/Icon';
+
 import {
   validateEmptyAndLength3,
-  validadeEmptyAndEmail
+  validateEmptyAndEmail
 } from '../../utils/validators';
 import services from '../../services';
 export default {
+  components: { Icon },
   setup() {
     const router = useRouter();
     const modal = useModal();
     const toast = useToast();
     const { value: emailValue, errorMessage: emailErrorMessage } = useField(
       'email',
-      validadeEmptyAndEmail
+      validateEmptyAndEmail
     );
 
     const { value: passwordValue, errorMessage: passwordErrorMessage } =
@@ -120,7 +124,7 @@ export default {
     // Dentro do state definimos todas as propriedades que iremos receber no nosso component (ModalLogin, nesse caso). Essa estratégia é
     const state = reactive({
       // o modal de login é um modal de requisição, por isso precisamos de uma propridade que verificar se há erros
-      hasError: false,
+      hasErrors: false,
       isLoading: false,
       email: {
         value: emailValue,
@@ -166,7 +170,7 @@ export default {
         state.isLoading = false;
       } catch (error) {
         state.isLoading = false;
-        state.hasError = !!error;
+        state.hasErrors = !!error;
         toast.error('Ocorreu um erro ao fazer o login');
       }
     }

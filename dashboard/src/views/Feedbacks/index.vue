@@ -1,10 +1,7 @@
 <template>
-<h1> Feedbacks </h1>
-
+  <h1>Feedbacks</h1>
 </template>
 
 <script lang="ts">
-    export defatult{
-
-    }
+export default {};
 </script>
