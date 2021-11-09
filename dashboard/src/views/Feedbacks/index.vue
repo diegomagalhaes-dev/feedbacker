@@ -2,6 +2,6 @@
   <h1>Feedbacks</h1>
 </template>
 
-<script lang="ts">
+<script>
 export default {};
 </script>
