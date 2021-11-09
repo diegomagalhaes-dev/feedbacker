@@ -98,8 +98,8 @@ import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 // Biblioteca para trabalhar com formulários
 import { useField } from 'vee-validate';
-import { useToast } from 'vue-toastification';
 import useModal from '../../hooks/useModal';
+import { useToast } from 'vue-toastification';
 import Icon from '../../components/Icon';
 
 import {
@@ -110,9 +110,9 @@ import services from '../../services';
 export default {
   components: { Icon },
   setup() {
+    const toast = useToast();
     const router = useRouter();
     const modal = useModal();
-    const toast = useToast();
     const { value: emailValue, errorMessage: emailErrorMessage } = useField(
       'email',
       validateEmptyAndEmail
