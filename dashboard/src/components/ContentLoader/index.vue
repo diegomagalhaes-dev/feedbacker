@@ -13,6 +13,7 @@
 
 <script>
 import { computed } from 'vue';
+
 export default {
   props: {
     maxWidth: {
@@ -41,22 +42,26 @@ export default {
       const value = Math.random() * (props.width - props.minWidth);
       return props.width ?? `${Math.floor(value + props.minWidth)}%`;
     });
+
     return { computedWidth };
   }
 };
 </script>
+
 <style lang="postcss" scoped>
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
   }
 }
+
 .content-loader {
   position: relative;
   vertical-align: middle;
   overflow: hidden;
   background: #f6f7f8;
 }
+
 .content-loader--fx {
   position: absolute;
   top: 0;
