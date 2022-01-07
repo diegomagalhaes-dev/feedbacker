@@ -86,6 +86,7 @@ export default {
       filters: [{ label: null, amount: null }]
     });
 
+    // executado quando o componte inicia ('onCreated')
     try {
       const { data } = await services.feedbacks.getSummary();
       state.filters = applyFiltersStructure(data);
@@ -100,6 +101,7 @@ export default {
     }
 
     function handleSelect({ type }) {
+      // caso um request esteja acontecendo, não faço nada
       if (store.isLoading) {
         return;
       }
@@ -111,6 +113,7 @@ export default {
         return { ...filter, active: false };
       });
 
+      // emitindo um 'select' que contém o type selecionado
       emit('select', type);
     }
 
