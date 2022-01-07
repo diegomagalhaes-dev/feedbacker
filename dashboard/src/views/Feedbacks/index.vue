@@ -92,6 +92,7 @@ export default {
       hasError: false
     });
 
+    // Hook do vue que nos permite tratar erros em components
     onErrorCaptured(handleErrors);
 
     onMounted(() => {
@@ -144,11 +145,13 @@ export default {
         state.isLoadingFeedbacks = true;
         state.pagination.limit = 5;
         state.pagination.offset = 0;
+        console.log(type);
         state.currentFeedbackType = type;
         const { data } = await services.feedbacks.getAll({
           type,
           ...state.pagination
         });
+        console.log(data);
 
         state.feedbacks = data.results;
         state.pagination = data.pagination;
