@@ -8,7 +8,7 @@ export default httpClient => ({
     const query = { limit, offset };
 
     if (type) {
-      query[type] = type;
+      query.type = type;
     }
 
     // Para passarmos querys-params no Axios, precisamos utilizar a key 'params'
